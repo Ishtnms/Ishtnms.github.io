@@ -61,7 +61,7 @@ def createHtml(articles):
         autoescape=select_autoescape(["html"]),
     )
     indexTemplate = env.get_template("index.html")
-    indexHtml = indexTemplate.render(articles=articles)
+    indexHtml = indexTemplate.render(posts=articles)
     (OUTPUT_FILE).write_text(indexHtml, encoding="utf-8")
 
     posts_output_dir = OUTPUT_DIR / "posts"
