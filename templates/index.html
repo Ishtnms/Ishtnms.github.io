@@ -1,0 +1,35 @@
+{#
+    Jinja2 教学点：{% extends %} 继承 base.html 的布局
+    只替换 {% block %} 区域，其余部分复用 base.html
+#}
+{% extends "base.html" %}
+
+{% block title %}nyarTan的博客 - 首页{% endblock %}
+
+{% block content %}
+    <h2>文章列表</h2>
+
+    {#
+        Jinja2 教学点：{% for %} 循环遍历 Python 传入的 posts 列表
+        每个 post 是一个字典，包含 title、date、slug 字段
+    #}
+    {% if posts %}
+        {% for post in posts %}
+        <article class="post-preview">
+            <h3>
+                {#
+                    Jinja2 教学点：{{ }} 输出变量值
+                    url() 是 Python 端自定义的过滤器，用来生成链接
+                #}
+                <a href="/posts/{{ post.slug }}.html">{{ post.title }}</a>
+            </h3>
+            <time class="post-date">{{ post.date }}</time>
+            {% if post.description %}
+            <p class="post-summary">{{ post.description }}</p>
+            {% endif %}
+        </article>
+        {% endfor %}
+    {% else %}
+        <p>暂无文章。</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>你好，世界！ - nyarTan的博客</title>
+    <link rel="stylesheet" href="/output/static/style.css">
+</head>
+<body>
+    
+    <header class="site-header">
+        <h1><a href="/index.html">我的博客</a></h1>
+        <p class="site-description">用 Python + Jinja2 搭建的静态博客</p>
+    </header>
+
+    
+    <main class="site-main">
+        
+    <article class="post-full">
+        <header class="post-header">
+            <h2>你好，世界！</h2>
+            <time class="post-date">2026-06-11</time>
+        </header>
+
+        <div class="post-body">
+            
+            
+            <p>这是我的第一篇博客文章。</p>
+
+<p>这个博客是用 <strong>Python + Jinja2</strong> 搭建的：</p>
+
+<ul>
+    <li><code>build.py</code> 读取 content/ 下的 HTML 片段</li>
+    <li>Jinja2 模板引擎把它们渲染成完整页面</li>
+    <li>输出到 output/ 目录，直接用浏览器打开</li>
+</ul>
+
+<p>不需要服务器，不需要数据库，纯静态文件。</p>
+        </div>
+
+        <nav class="post-nav">
+            <a href="/index.html">&larr; 返回首页</a>
+        </nav>
+    </article>
+
+    </main>
+
+    
+    <footer class="site-footer">
+        <p>由 Python 脚本自动生成 &mdash; <a href="/index.html">返回首页</a></p>
+    </footer>
+</body>
+</html>

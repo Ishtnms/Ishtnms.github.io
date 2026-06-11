@@ -1,33 +1,25 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>nyarTan的博客 - 首页</title>
+    {# 页面标题所在位置,如果没有title标签,则使用默认标题 #}
+    <title>{% block title %}nyarTan的博客{% endblock %}</title>
     <link rel="stylesheet" href="/output/static/style.css">
 </head>
 <body>
-    
+    {# 页面头部 —— 所有页面共用 #}
     <header class="site-header">
         <h1><a href="/index.html">我的博客</a></h1>
         <p class="site-description">用 Python + Jinja2 搭建的静态博客</p>
     </header>
 
-    
+    {# 主体内容区 —— 子模板会替换这里 #}
     <main class="site-main">
-        
-    <h2>文章列表</h2>
-
-    
-    
-        <p>暂无文章。</p>
-    
-
+        {% block content %}{% endblock %}
     </main>
 
-    
+    {# 页脚 —— 所有页面共用 #}
     <footer class="site-footer">
         <p>由 Python 脚本自动生成 &mdash; <a href="/index.html">返回首页</a></p>
     </footer>

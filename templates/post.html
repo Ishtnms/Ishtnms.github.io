@@ -1,0 +1,29 @@
+{#
+    Jinja2 教学点：同样继承 base.html，但展示的是单篇文章
+    这体现了模板继承的核心价值 —— 同一套骨架，不同内容
+#}
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} - nyarTan的博客{% endblock %}
+
+{% block content %}
+    <article class="post-full">
+        <header class="post-header">
+            <h2>{{ post.title }}</h2>
+            <time class="post-date">{{ post.date }}</time>
+        </header>
+
+        <div class="post-body">
+            {#
+                Jinja2 教学点：{{ post.content }} 是整段 HTML
+                模板引擎默认会对 HTML 做转义（防 XSS），但这里我们传入的就是安全 HTML
+            #}
+            {# |safe 告诉 Jinja2：这段内容是安全的 HTML，不要转义 #}
+            {{ post.content | safe }}
+        </div>
+
+        <nav class="post-nav">
+            <a href="/index.html">&larr; 返回首页</a>
+        </nav>
+    </article>
+{% endblock %}

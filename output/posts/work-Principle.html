@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Python 静态博客的原理 - nyarTan的博客</title>
+    <link rel="stylesheet" href="/output/static/style.css">
+</head>
+<body>
+    
+    <header class="site-header">
+        <h1><a href="/index.html">我的博客</a></h1>
+        <p class="site-description">用 Python + Jinja2 搭建的静态博客</p>
+    </header>
+
+    
+    <main class="site-main">
+        
+    <article class="post-full">
+        <header class="post-header">
+            <h2>Python 静态博客的原理</h2>
+            <time class="post-date">2024-06-05</time>
+        </header>
+
+        <div class="post-body">
+            
+            
+            <p>上一篇讲了 <em>这个博客是什么</em>，这篇讲 <em>它是怎么工作的</em>。</p>
+
+<h3>核心流程</h3>
+<ol>
+    <li>在 <code>content/</code> 目录下写 HTML 片段（就是你现在看到的这些）</li>
+    <li>运行 <code>python build.py</code></li>
+    <li>脚本读取所有文章，提取元信息（标题、日期）</li>
+    <li>Jinja2 把内容和模板结合，渲染出完整 HTML</li>
+    <li>输出到 <code>output/</code> 目录</li>
+</ol>
+
+<h3>Jinja2 做了什么</h3>
+<p>Jinja2 是 Python 最流行的模板引擎。它做的事情很简单：</p>
+<ul>
+    <li><code>{{ '{{ variable }}' }}</code> — 插入变量</li>
+    <li><code>{% raw %}{% for %}...{% endfor %}{% endraw %}</code> — 循环</li>
+    <li><code>{% raw %}{% if %}...{% endif %}{% endraw %}</code> — 条件判断</li>
+    <li><code>{% raw %}{% block %}...{% endblock %}{% endraw %}</code> — 模板继承</li>
+</ul>
+
+<p>掌握了这四个语法，你就能用 Python 生成任何 HTML 页面。</p>
+        </div>
+
+        <nav class="post-nav">
+            <a href="/index.html">&larr; 返回首页</a>
+        </nav>
+    </article>
+
+    </main>
+
+    
+    <footer class="site-footer">
+        <p>由 Python 脚本自动生成 &mdash; <a href="/index.html">返回首页</a></p>
+    </footer>
+</body>
+</html>
