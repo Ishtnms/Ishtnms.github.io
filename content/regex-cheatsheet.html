@@ -1,0 +1,357 @@
+<!--
+    title: 正则表达式速查表
+    date: 2026-06-12
+    description: 正则表达式学习总结笔记
+-->
+
+<h1>正则表达式语法速查表</h1>
+<h2>目录</h2>
+<ol>
+<li><a href="#1-基础元字符">基础元字符</a></li>
+<li><a href="#2-字符类">字符类（Character Class）</a></li>
+<li><a href="#3-量词">量词（Quantifier）</a></li>
+<li><a href="#4-分组与捕获">分组与捕获</a></li>
+<li><a href="#5-锚点">锚点（Anchor）</a></li>
+<li><a href="#6-环视">环视（Lookaround）</a></li>
+<li><a href="#7-转义序列">转义序列</a></li>
+<li><a href="#8-贪婪-vs-非贪婪">贪婪 vs 非贪婪</a></li>
+<li><a href="#9-python-re-模块标志">Python re 模块标志</a></li>
+<li><a href="#10-常见场景模板">常见场景模板</a></li>
+</ol>
+<hr />
+<h2>1. 基础元字符</h2>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>含义</th>
+<th>示例</th>
+<th>匹配</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.</code></td>
+<td>任意单个字符（除换行）</td>
+<td><code>h.t</code></td>
+<td><code>hat</code>, <code>hot</code>, <code>h@t</code></td>
+</tr>
+<tr>
+<td><code>\</code></td>
+<td>转义字符</td>
+<td><code>\.</code></td>
+<td>字面句号 <code>.</code></td>
+</tr>
+<tr>
+<td><code>\|</code></td>
+<td>或</td>
+<td><code>cat\|dog</code></td>
+<td><code>cat</code> 或 <code>dog</code></td>
+</tr>
+</tbody>
+</table>
+<h2>2. 字符类</h2>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>含义</th>
+<th>示例</th>
+<th>匹配</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[abc]</code></td>
+<td>a、b、c 中任意一个</td>
+<td><code>[ae]llo</code></td>
+<td><code>allo</code>, <code>ello</code></td>
+</tr>
+<tr>
+<td><code>[a-z]</code></td>
+<td>a 到 z 任意一个小写字母</td>
+<td><code>[a-z]</code></td>
+<td><code>a</code>, <code>b</code>, ..., <code>z</code></td>
+</tr>
+<tr>
+<td><code>[0-9]</code></td>
+<td>0 到 9 任意一个数字</td>
+<td><code>\d</code> 等价</td>
+<td><code>0</code>, <code>1</code>, ..., <code>9</code></td>
+</tr>
+<tr>
+<td><code>[a-zA-Z]</code></td>
+<td>任意大小写字母</td>
+<td>—</td>
+<td><code>A</code>, <code>b</code>, <code>Z</code></td>
+</tr>
+<tr>
+<td><code>[^abc]</code></td>
+<td><strong>不</strong>是 a、b、c 的任意字符</td>
+<td><code>[^0-9]</code></td>
+<td>非数字字符</td>
+</tr>
+<tr>
+<td><code>\d</code></td>
+<td>数字 <code>[0-9]</code></td>
+<td><code>\d{3}</code></td>
+<td><code>123</code>, <code>456</code></td>
+</tr>
+<tr>
+<td><code>\D</code></td>
+<td>非数字 <code>[^0-9]</code></td>
+<td>—</td>
+<td><code>a</code>, <code>X</code>, 空格</td>
+</tr>
+<tr>
+<td><code>\w</code></td>
+<td>单词字符 <code>[a-zA-Z0-9_]</code></td>
+<td><code>\w+</code></td>
+<td><code>hello</code>, <code>var_1</code></td>
+</tr>
+<tr>
+<td><code>\W</code></td>
+<td>非单词字符 <code>[^a-zA-Z0-9_]</code></td>
+<td>—</td>
+<td><code>@</code>, <code>!</code>, 空格</td>
+</tr>
+<tr>
+<td><code>\s</code></td>
+<td>空白字符（空格、Tab、换行等）</td>
+<td><code>a\s*b</code></td>
+<td><code>ab</code>, <code>a b</code>, <code>a  b</code></td>
+</tr>
+<tr>
+<td><code>\S</code></td>
+<td>非空白字符</td>
+<td>—</td>
+<td>任何可见字符</td>
+</tr>
+<tr>
+<td><code>\n</code></td>
+<td>换行符</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>\t</code></td>
+<td>Tab</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2>3. 量词</h2>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>含义</th>
+<th>示例</th>
+<th>匹配</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*</code></td>
+<td>0 次或多次</td>
+<td><code>ab*c</code></td>
+<td><code>ac</code>, <code>abc</code>, <code>abbbc</code></td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td>1 次或多次</td>
+<td><code>ab+c</code></td>
+<td><code>abc</code>, <code>abbbc</code>（不匹配 <code>ac</code>）</td>
+</tr>
+<tr>
+<td><code>?</code></td>
+<td>0 次或 1 次</td>
+<td><code>ab?c</code></td>
+<td><code>ac</code>, <code>abc</code></td>
+</tr>
+<tr>
+<td><code>{n}</code></td>
+<td>恰好 n 次</td>
+<td><code>\d{4}</code></td>
+<td>4 位数字</td>
+</tr>
+<tr>
+<td><code>{n,}</code></td>
+<td>至少 n 次</td>
+<td><code>\d{4,}</code></td>
+<td>4 位及以上数字</td>
+</tr>
+<tr>
+<td><code>{n,m}</code></td>
+<td>n 到 m 次</td>
+<td><code>\d{2,4}</code></td>
+<td>2 到 4 位数字</td>
+</tr>
+</tbody>
+</table>
+<h2>4. 分组与捕获</h2>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>含义</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>(...)</code></td>
+<td><strong>捕获分组</strong>，可通过 <code>group(1)</code> 取出</td>
+<td><code>(\d{4})-(\d{2})-(\d{2})</code> 匹配 <code>2024-06-01</code> → <code>group(1)</code> = <code>2024</code></td>
+</tr>
+<tr>
+<td><code>(?:...)</code></td>
+<td><strong>非捕获分组</strong>，只做逻辑分组不存</td>
+<td><code>(?:http\|https)://</code></td>
+</tr>
+<tr>
+<td><code>(?P&lt;name&gt;...)</code></td>
+<td><strong>命名分组</strong>，Python 支持</td>
+<td><code>(?P&lt;year&gt;\d{4})</code> → <code>group("year")</code></td>
+</tr>
+<tr>
+<td><code>\1</code>, <code>\2</code></td>
+<td><strong>反向引用</strong>，引用前面的分组</td>
+<td><code>(\w+)\s+\1</code> 匹配 <code>hello hello</code></td>
+</tr>
+</tbody>
+</table>
+<h2>5. 锚点</h2>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>含义</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>^</code></td>
+<td>行首</td>
+<td><code>^Hello</code> 只匹配开头的 <code>Hello</code></td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>行尾</td>
+<td><code>end$</code> 只匹配结尾的 <code>end</code></td>
+</tr>
+<tr>
+<td><code>\b</code></td>
+<td>单词边界</td>
+<td><code>\bcat\b</code> 匹配独立的 <code>cat</code>，不匹配 <code>catalog</code></td>
+</tr>
+<tr>
+<td><code>\B</code></td>
+<td>非单词边界</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2>6. 环视（零宽度断言）</h2>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>含义</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>(?=...)</code></td>
+<td>后面跟着...</td>
+<td><code>\w+(?=@)</code> 匹配邮箱的 <code>@</code> 前部分</td>
+</tr>
+<tr>
+<td><code>(?!...)</code></td>
+<td>后面不是...</td>
+<td><code>\d{3}(?!\d)</code> 恰好 3 位数字，后面不能是数字</td>
+</tr>
+<tr>
+<td><code>(?&lt;=...)</code></td>
+<td>前面有...</td>
+<td><code>(?&lt;=@)\w+</code> 匹配邮箱的域名部分</td>
+</tr>
+<tr>
+<td><code>(?&lt;!...)</code></td>
+<td>前面没有...</td>
+<td><code>(?&lt;!\$)\d+</code> 匹配前面没有 <code>$</code> 的数字</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>"零宽度"</strong> 意思是只检查、不消费字符——匹配结果里不包含环视部分。</p>
+</blockquote>
+<h2>7. 转义序列</h2>
+<table>
+<thead>
+<tr>
+<th>序列</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\.</code></td>
+<td>字面句号</td>
+</tr>
+<tr>
+<td><code>\*</code></td>
+<td>字面星号</td>
+</tr>
+<tr>
+<td><code>\+</code></td>
+<td>字面加号</td>
+</tr>
+<tr>
+<td><code>\?</code></td>
+<td>字面问号</td>
+</tr>
+<tr>
+<td><code>\(</code> <code>\)</code></td>
+<td>字面括号</td>
+</tr>
+<tr>
+<td><code>\[</code> <code>\]</code></td>
+<td>字面方括号</td>
+</tr>
+<tr>
+<td><code>\{</code> <code>\}</code></td>
+<td>字面花括号</td>
+</tr>
+<tr>
+<td><code>\\</code></td>
+<td>字面反斜杠</td>
+</tr>
+<tr>
+<td><code>\/</code></td>
+<td>字面斜杠</td>
+</tr>
+</tbody>
+</table>
+<h2>8. 贪婪 vs 非贪婪</h2>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>含义</th>
+<th>示例</th>
+<th>匹配结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.*</code></td>
+<td>贪婪——尽量多匹配</td>
+<td><code>&lt;p&gt;hello&lt;/p&gt;</code> 对 <code>&lt;(.*)&gt;</code></td>
+<td>捕获 `p&gt;hello</td>
+</tr>
+</tbody>
+</table>
