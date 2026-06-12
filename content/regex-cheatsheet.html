@@ -15,8 +15,8 @@
 <li><a href="#6-环视">环视（Lookaround）</a></li>
 <li><a href="#7-转义序列">转义序列</a></li>
 <li><a href="#8-贪婪-vs-非贪婪">贪婪 vs 非贪婪</a></li>
-<li><a href="#9-python-re-模块标志">Python re 模块标志</a></li>
-<li><a href="#10-常见场景模板">常见场景模板</a></li>
+<li><a href="#9-常见场景模板">常见场景模板</a></li>
+<li><a href="#10-python-re模块标志">Python re模块标志</a></li>
 </ol>
 <hr />
 <h2>1. 基础元字符</h2>
@@ -351,7 +351,122 @@
 <td><code>.*</code></td>
 <td>贪婪——尽量多匹配</td>
 <td><code>&lt;p&gt;hello&lt;/p&gt;</code> 对 <code>&lt;(.*)&gt;</code></td>
-<td>捕获 `p&gt;hello</td>
+<td>捕获<code>p&gt;hello&lt;/p</code></td>
+</tr>
+<tr>
+<td><code>.*?</code></td>
+<td>非贪婪——尽量少匹配</td>
+<td><code>&lt;p&gt;hello&lt;/p&gt;</code> 对 <code>&lt;(.*?)&gt;</code></td>
+<td>捕获<code>p</code></td>
+</tr>
+</tbody>
+</table>
+<h2>9. 常见场景模板</h2>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>正则</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTML 注释</td>
+<td><code>&lt;!--.*?--&gt;</code></td>
+<td><code>re.DOTALL</code> + 非贪婪</td>
+</tr>
+<tr>
+<td>HTML 标签</td>
+<td><code>&lt;[^&gt;]+&gt;</code></td>
+<td>匹配开始/结束/自闭合标签</td>
+</tr>
+<tr>
+<td>去除 HTML 标签</td>
+<td><code>re.sub(r'&lt;[^&gt;]+&gt;', '', s)</code></td>
+<td>替换为空</td>
+</tr>
+<tr>
+<td>提取 <code>key: value</code></td>
+<td><code>(\w+):\s*(.+)</code></td>
+<td>key 是单词字符，<code>\s*</code> 允许冒号后空格</td>
+</tr>
+<tr>
+<td>邮箱</td>
+<td><code>[\w.-]+@[\w.-]+\.\w+</code></td>
+<td>基础版</td>
+</tr>
+<tr>
+<td>URL</td>
+<td><code>https?://[\w./-]+</code></td>
+<td>基础版</td>
+</tr>
+<tr>
+<td>日期 <code>YYYY-MM-DD</code></td>
+<td><code>\d{4}-\d{2}-\d{2}</code></td>
+<td>基础格式匹配</td>
+</tr>
+<tr>
+<td>中文</td>
+<td><code>[一-鿿]</code></td>
+<td>Unicode 汉字范围</td>
+</tr>
+<tr>
+<td>纯数字串</td>
+<td><code>^\d+$</code></td>
+<td>整行都是数字</td>
+</tr>
+<tr>
+<td>首尾无空格</td>
+<td><code>^\S.*\S$\|^\S$</code></td>
+<td>或 Python 直接用 <code>s.strip()</code></td>
+</tr>
+<tr>
+<td>提取文件名</td>
+<td><code>[^/\\]+$</code></td>
+<td>路径最后一段</td>
+</tr>
+<tr>
+<td>提取扩展名</td>
+<td><code>\.(\w+)$</code></td>
+<td>比如 <code>.pdf</code> → <code>pdf</code></td>
+</tr>
+<tr>
+<td>密码强度</td>
+<td><code>^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$</code></td>
+<td>至少 8 位，含大小写 + 数字</td>
+</tr>
+</tbody>
+</table>
+<h2>10. Python re模块标志</h2>
+<table>
+<thead>
+<tr>
+<th>标志</th>
+<th>简写</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>re.IGNORECASE</code></td>
+<td><code>re.I</code></td>
+<td>忽略大小写</td>
+</tr>
+<tr>
+<td><code>re.MULTILINE</code></td>
+<td><code>re.M</code></td>
+<td><code>^</code> 和 <code>$</code> 匹配每行的首尾，而非整个字符串首尾</td>
+</tr>
+<tr>
+<td><code>re.DOTALL</code></td>
+<td><code>re.S</code></td>
+<td><code>.</code> 也能匹配换行符 <code>\n</code></td>
+</tr>
+<tr>
+<td><code>re.VERBOSE</code></td>
+<td><code>re.X</code></td>
+<td>允许在正则里写注释和空格（增强可读性）</td>
 </tr>
 </tbody>
 </table>
