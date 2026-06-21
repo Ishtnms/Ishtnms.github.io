@@ -406,6 +406,11 @@ body {
 
 /* ---- 外层卡片 ---- */
 .project-full {
+    --project-accent: #0d9488;
+    --project-accent-hover: #0f766e;
+    --project-accent-light: #f0fdfa;
+    --project-accent-subtle: #e6faf5;
+
     background: var(--color-card);
     margin-top: 20px;
     border-radius: var(--radius-md);
@@ -418,7 +423,7 @@ body {
 .project-header {
     padding: 28px 36px 20px;
     border-bottom: 1px solid var(--color-border);
-    background: linear-gradient(135deg, #f0f7ff 0%, #fcfdfe 100%);
+    background: linear-gradient(135deg, #f0fdfa 0%, #f8fafb 100%);
 }
 
 .project-header h2 {
@@ -450,7 +455,7 @@ body {
     padding: 28px 36px 32px;
 }
 
-/* ---------- 项目大标题 ---------- */
+/* ---------- 大标题（h1） ---------- */
 .project-intro h1 {
     margin: 0 0 8px;
     font-size: 1.85em;
@@ -463,12 +468,14 @@ body {
 /* ---------- 一句话简介（blockquote） ---------- */
 .project-intro > blockquote {
     margin: 8px 0 28px;
-    padding: 14px 20px;
-    border-left: 4px solid var(--color-primary);
-    background: var(--color-primary-light);
+    padding: 16px 22px;
+    border-left: 4px solid var(--project-accent);
+    background: var(--project-accent-light);
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-    color: var(--color-text-secondary);
-    font-size: 0.97em;
+    color: #134e4a;
+    font-size: 1em;
+    font-weight: 500;
+    letter-spacing: 0.01em;
 }
 
 .project-intro > blockquote p {
@@ -477,42 +484,46 @@ body {
 
 /* ---------- 段落 ---------- */
 .project-intro p {
-    margin-bottom: 1em;
-    line-height: 1.85;
+    margin-bottom: 1.1em;
+    line-height: 1.9;
+    color: var(--color-text-secondary);
 }
 
-/* ---------- 二级标题（各板块标题） ---------- */
+/* ---------- 二级标题 ---------- */
 .project-intro h2 {
-    margin-top: 36px;
-    margin-bottom: 14px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--color-border);
+    margin-top: 40px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--project-accent);
     font-size: 1.4em;
     font-weight: 650;
     color: var(--color-text);
 }
 
-/* ---------- 三级标题 ---------- */
+/* ---------- 三级标题（板块标题）— 左侧强调条 ---------- */
 .project-intro h3 {
-    margin-top: 24px;
-    margin-bottom: 10px;
-    font-size: 1.15em;
-    font-weight: 600;
+    margin-top: 36px;
+    margin-bottom: 16px;
+    padding-left: 14px;
+    border-left: 4px solid var(--project-accent);
+    font-size: 1.2em;
+    font-weight: 650;
     color: var(--color-text);
+    line-height: 1.4;
 }
 
 /* ---------- 链接 ---------- */
 .project-intro a {
-    color: var(--color-primary);
+    color: var(--project-accent);
     text-decoration: none;
-    border-bottom: 1.5px solid var(--color-primary-light);
+    border-bottom: 1.5px solid var(--project-accent-subtle);
     transition: border-color var(--transition-fast),
         background var(--transition-fast);
 }
 
 .project-intro a:hover {
-    border-bottom-color: var(--color-primary);
-    background: var(--color-primary-light);
+    border-bottom-color: var(--project-accent);
+    background: var(--project-accent-light);
 }
 
 /* ---------- 列表 ---------- */
@@ -528,7 +539,18 @@ body {
 }
 
 .project-intro li::marker {
-    color: var(--color-primary);
+    color: var(--project-accent);
+}
+
+/* 功能特性 — 一级分类加粗 */
+.project-intro > ul > li {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.project-intro > ul > li > ul > li {
+    font-weight: 400;
+    margin-bottom: 4px;
 }
 
 /* ---------- 行内代码 ---------- */
@@ -551,7 +573,7 @@ body {
     padding: 18px 22px;
     border-radius: var(--radius-sm);
     overflow-x: auto;
-    margin: 16px 0 22px;
+    margin: 16px 0 24px;
     box-shadow: var(--shadow-sm);
     border: 1px solid #334155;
 }
@@ -566,37 +588,51 @@ body {
     font-weight: 400;
 }
 
-/* 列表项内的代码块 — 避免左边距过大 */
+/* 列表项内的代码块 */
 .project-intro li pre {
     margin: 8px 0 12px;
 }
 
-/* ---------- 截图区域 figure / figcaption ---------- */
+/* ---------- 截图区域 figure — 卡片化 ---------- */
 .project-intro figure {
-    margin: 20px 0 28px;
+    margin: 16px 0 32px;
+    padding: 16px 16px 8px;
+    background: #fafcfd;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
     text-align: center;
+    transition: box-shadow var(--transition-normal);
+}
+
+.project-intro figure:hover {
+    box-shadow: var(--shadow-md);
 }
 
 .project-intro figure img {
     max-width: 100%;
     height: auto;
-    border-radius: var(--radius-sm);
+    border-radius: 4px;
     border: 1px solid var(--color-border);
-    box-shadow: var(--shadow-md);
 }
 
 .project-intro figcaption {
     margin-top: 10px;
+    margin-bottom: 4px;
     font-size: 0.9em;
-    color: var(--color-text-muted);
-    font-style: italic;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+}
+
+.project-intro figcaption::before {
+    content: "📷 ";
+    font-size: 0.95em;
 }
 
 /* ---------- 表格 ---------- */
 .project-intro table {
     width: 100%;
     border-collapse: collapse;
-    margin: 16px 0 22px;
+    margin: 16px 0 24px;
     font-size: 0.93em;
     border-radius: var(--radius-sm);
     overflow: hidden;
@@ -605,29 +641,33 @@ body {
 
 .project-intro th,
 .project-intro td {
-    padding: 10px 14px;
+    padding: 11px 16px;
     border: 1px solid var(--color-border);
     text-align: left;
 }
 
 .project-intro th {
-    background: var(--color-code-bg);
+    background: var(--project-accent);
+    color: #ffffff;
     font-weight: 600;
-    color: var(--color-text);
     font-size: 0.9em;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
 }
 
 .project-intro tr:nth-child(even) td {
-    background: #fafbfc;
+    background: #fafcfd;
+}
+
+.project-intro tr:hover td {
+    background: var(--project-accent-light);
 }
 
 /* 表格移动端横向滚动 */
 .project-intro .table-scroll {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    margin: 16px 0 22px;
+    margin: 16px 0 24px;
 }
 
 /* ---------- TODO 复选框 ---------- */
@@ -646,8 +686,8 @@ body {
 }
 
 .project-intro li input[type="checkbox"]:checked {
-    background: var(--color-primary);
-    border-color: var(--color-primary);
+    background: var(--project-accent);
+    border-color: var(--project-accent);
 }
 
 .project-intro li input[type="checkbox"]:checked::after {
@@ -664,10 +704,10 @@ body {
 .project-intro hr {
     border: none;
     border-top: 1px solid var(--color-border);
-    margin: 32px 0;
+    margin: 36px 0;
 }
 
-/* ---------- 架构图 / 目录结构 代码块 ---------- */
+/* ---------- 架构图 / 目录结构 — 浅色主题 ---------- */
 .project-intro pre.diagram {
     background: #f8fafb;
     color: #334155;
@@ -684,27 +724,27 @@ body {
 .project-nav {
     padding: 14px 36px 16px;
     border-top: 2px solid var(--color-border);
-    background: #fcfdfe;
+    background: #f8fafb;
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
 }
 
 .project-nav a {
-    color: var(--color-primary);
+    color: var(--project-accent);
     text-decoration: none;
     font-weight: 500;
     font-size: 0.95em;
     padding: 6px 14px;
     border-radius: 20px;
-    border: 1.5px solid var(--color-primary-light);
+    border: 1.5px solid var(--project-accent-subtle);
     transition: all var(--transition-fast);
 }
 
 .project-nav a:hover {
-    background: var(--color-primary);
+    background: var(--project-accent);
     color: #fff;
-    border-color: var(--color-primary);
+    border-color: var(--project-accent);
     box-shadow: var(--shadow-sm);
 }
 
@@ -810,6 +850,16 @@ body {
     .project-intro th,
     .project-intro td {
         padding: 7px 10px;
+    }
+
+    .project-intro h3 {
+        font-size: 1.1em;
+        padding-left: 10px;
+    }
+
+    .project-intro figure {
+        padding: 10px 10px 4px;
+        margin: 12px 0 24px;
     }
 
     .project-nav {
