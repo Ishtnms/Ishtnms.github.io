@@ -16,10 +16,11 @@ from pathlib import Path
 """
 
 BASE_DIR = Path(__file__).resolve().parent
-TEMPLATE_DIR = BASE_DIR / "templates"
+TEMPLATE_DIR = BASE_DIR / ".templates"
 OUTPUT_DIR = BASE_DIR / "output"
 OUTPUT_FILE = BASE_DIR / "index.html"
-CONTENT_DIR = BASE_DIR / "content"
+CONTENT_DIR = BASE_DIR / ".content"
+PROJECT_DIR = BASE_DIR / ".projects"
 
 
 
@@ -47,37 +48,50 @@ def get_article(file):
     }
 
 def get_articles():
+    ".content目录下的html文件按照日期排序,获取文章列表"
     contentFiles = sorted(CONTENT_DIR.glob("*.html"),reverse=True)
+    ".project目录下的html文件按照日期排序,获取文章列表"
+    projectFiles = sorted(PROJECT_DIR.glob("*.html"),reverse=True)
 
     articles = []
+    projects = []
     for file in contentFiles:
         article = get_article(file)
         articles.append(article)
-    return articles
+    for file in projectFiles:
+        article = get_article(file)
+        projects.append(article)
+    return articles,projects
     
-def createHtml(articles):
+def createHtml(articles,projects):
     env = Environment(
         loader=FileSystemLoader(str(TEMPLATE_DIR)),
         autoescape=select_autoescape(["html"]),
     )
     indexTemplate = env.get_template("index.html")
-    indexHtml = indexTemplate.render(posts=articles)
+    indexHtml = indexTemplate.render(posts=articles, projects=projects)
     (OUTPUT_FILE).write_text(indexHtml, encoding="utf-8")
 
     posts_output_dir = OUTPUT_DIR / "posts"
+    projects_output_dir = OUTPUT_DIR / "projects"
     posts_output_dir.mkdir(parents=True, exist_ok=True)
+    projects_output_dir.mkdir(parents=True, exist_ok=True)
 
     post_template = env.get_template("post.html")
     for article in articles:
         postHtml = post_template.render(post=article)
         outPutPath = posts_output_dir / (article["slug"] + ".html")
         outPutPath.write_text(postHtml, encoding="utf-8")
-
+    project_template = env.get_template("project.html")
+    for project in projects:
+        projectHtml = project_template.render(project=project)
+        outPutPath = projects_output_dir / (project["slug"] + ".html")
+        outPutPath.write_text(projectHtml, encoding="utf-8")
 
 def main():
     OUTPUT_DIR.mkdir(exist_ok=True,parents=True)
-    articles = get_articles()
-    createHtml(articles)
+    articles , projects = get_articles()
+    createHtml(articles,projects)
 
 
 

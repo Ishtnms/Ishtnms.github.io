@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>easyChat - 仿微信聊天室项目 - nyarTan的博客</title>
+    <link rel="stylesheet" href="/output/static/style.css">
+</head>
+<body>
+    
+    <header class="site-header">
+        <h1><a href="/index.html">我的博客</a></h1>
+        <p class="site-description">用 Python + Jinja2 搭建的静态博客</p>
+    </header>
+
+    
+    <main class="site-main">
+        
+    <article class="project-full">
+        <header class="project-header">
+            <h2>easyChat - 仿微信聊天室项目</h2>
+            <time class="project-date">2026-06-21</time>
+        </header>
+
+        <div class="project-intro">
+            <blockquote>
+    <p>仿聊天室项目,学习使用redis,netty,进一步了解aop和springboot, 初步学习socket的具体使用</p>
+</blockquote>
+<h3>功能特性</h3>
+<ul>
+    <li>用户模块
+        <ul>
+            <li>用户注册</li>
+            <li>用户登录</li>
+            <li>个人信息管理</li>
+            <li>密码修改</li>
+            <li>退出登录</li>
+        </ul>
+    </li>
+    <li>好友管理模块
+        <ul>
+            <li>好友搜索</li>
+            <li>好友申请</li>
+            <li>申请处理</li>
+            <li>好友列表</li>
+            <li>删除好友</li>
+            <li>黑名单管理</li>
+        </ul>
+    </li>
+    <li>群组模块
+        <ul>
+            <li>创建群组</li>
+            <li>群组信息</li>
+            <li>加入/退出群组</li>
+            <li>群成员管理</li>
+            <li>解散群组</li>
+        </ul>
+    </li>
+    <li>消息模块
+        <ul>
+            <li>文字消息</li>
+            <li>文件消息</li>
+            <li>实时推送</li>
+            <li>离线消息</li>
+            <li>会话管理</li>
+        </ul>
+    </li>
+    <li>管理员模块
+        <ul>
+            <li>用户管理</li>
+            <li>群组管理</li>
+            <li>应用更新管理</li>
+            <li>靓号管理</li>
+            <li>系统设置</li>
+        </ul>
+    </li>
+</ul>
+<h3>技术栈（后端）</h3>
+<table>
+    <thead><tr><th>层级</th><th>技术</th><th>说明</th></tr></thead>
+    <tbody>
+        <tr><td>框架</td><td>Spring Boot 2.x</td><td>整体脚手架，管理 Bean、事务、AOP</td></tr>
+        <tr><td>网络通信</td><td>Netty</td><td>异步非阻塞 TCP 长连接，承载即时消息收发</td></tr>
+        <tr><td>关系型数据库</td><td>MySQL</td><td>用户、好友关系、群组等结构化数据持久化</td></tr>
+        <tr><td>缓存 &amp; 消息</td><td>Redis</td><td>会话状态缓存、离线消息队列、在线用户管理</td></tr>
+        <tr><td>语言</td><td>Java 8</td><td>主力开发语言</td></tr>
+    </tbody>
+</table>
+<h3>项目截图</h3>
+<figure>
+    <img src="/output/static/monika.png" alt="项目运行结果" style="max-width:100%; border:1px solid #ddd; border-radius:4px;" />
+    <figcaption>图1:聊天界面 — 与讯飞火星 AI 对话，消息实时收发</figcaption>
+</figure>
+<figure>
+    <img src="/output/static/kongzhitai.png" alt="后端项目控制台" style="max-width:100%; border:1px solid #ddd; border-radius:4px;" />
+    <figcaption>图2:后端项目控制台</figcaption>
+</figure>
+<figure>
+    <img src="/output/static/data.png" alt="聊天历史数据表" style="max-width:100%; border:1px solid #ddd; border-radius:4px;" />
+    <figcaption>图3:聊天历史数据表</figcaption>
+</figure>
+<figure>
+    <img src="/output/static/redis.png" alt="Redis缓存管理" style="max-width:100%; border:1px solid #ddd; border-radius:4px;" />
+    <figcaption>图4:Redis缓存管理</figcaption>
+</figure>
+<figure>
+    <img src="/output/static/floder.png" alt="项目目录结构" style="max-width:100%; border:1px solid #ddd; border-radius:4px;" />
+    <figcaption>图5:项目目录结构</figcaption>
+</figure>
+<h3>项目背景</h3>
+<p>这个项目是基于Spring Boot和Netty开发的即时聊天应用,旨在学习和实践现代Web开发技术。通过实现用户注册登录、好友管理、群组聊天和消息推送等功能,深入了解了后端开发的各个方面。</p>
+<p>在这个过程中，掌握了 AOP 切面编程，用于统一日志、权限校验等横切关注点，显著提升了代码的可维护性；实践了 Redis 在会话缓存和消息队列中的落地应用；同时在对各类网络异常的处理中，加深了对异常体系的理解。</p>
+<h3>目录结构</h3>
+<pre class="diagram"><code>
+easyChat/
+├── src/
+│   ├── main/
+│   │   ├── annotation/       # 自定义注解
+│   │   ├── aspect/           # AOP 切面
+│   │   ├── controller/       # 控制器层
+│   │   ├── entity/           # 实体类
+│   │   ├── exception/        # 异常处理
+│   │   ├── mappers/          # MyBatis 数据映射
+│   │   ├── redis/            # Redis 配置与工具
+│   │   ├── service/          # 业务逻辑层
+│   │   ├── utils/            # 通用工具类
+│   │   ├── websocket/        # WebSocket 通信
+│   │   ├── EasyChatApplication.java  # Spring Boot 启动类
+│   │   └── InitRun.java              # 应用初始化
+│   └── resources/            # 配置文件 (application.yml, mybatis 的配置等)
+└── pom.xml
+</code></pre>
+<h2>遇到难点 &amp; 解决方案</h2>
+<table>
+    <thead><tr><th>难点</th><th>解决方案</th></tr></thead>
+    <tbody>
+        <tr><td>机器人聊天历史消息读取异常</td><td>通过增加异常处理机制和日志记录，定位并解决了消息读取失败的问题</td></tr>
+        <tr><td>虚拟机程序损坏</td><td>重新安装虚拟机和相关软件</td></tr>
+    </tbody>
+</table>
+        </div>
+
+        <nav class="project-nav">
+            <a href="/index.html">&larr; 返回首页</a>
+        </nav>
+    </article>
+
+    </main>
+
+    
+    <footer class="site-footer">
+        <p>由 Python 脚本自动生成 &mdash; <a href="/index.html">返回首页</a></p>
+    </footer>
+</body>
+</html>

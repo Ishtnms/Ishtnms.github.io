@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.title }} - nyarTan的博客{% endblock %}
+
+{% block content %}
+    <article class="project-full">
+        <header class="project-header">
+            <h2>{{ project.title }}</h2>
+            <time class="project-date">{{ project.date }}</time>
+        </header>
+
+        <div class="project-intro">
+            {{ project.content | safe }}
+        </div>
+
+        <nav class="project-nav">
+            <a href="/index.html">&larr; 返回首页</a>
+        </nav>
+    </article>
+{% endblock %}

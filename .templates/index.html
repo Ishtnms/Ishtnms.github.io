@@ -32,4 +32,20 @@
     {% else %}
         <p>暂无文章。</p>
     {% endif %}
+    <h2>项目列表</h2>
+    {% if projects %}
+        {% for project in projects %}
+        <article class="post-preview">
+            <h3>
+                <a href="/output/projects/{{ project.slug }}.html">{{ project.title }}</a>
+            </h3>
+            <time class="post-date">{{ project.date }}</time>
+            {% if project.description %}
+            <p class="post-summary">{{ project.description }}</p>
+            {% endif %}
+        </article>
+        {% endfor %}
+    {% else %}
+        <p>暂无项目。</p>
+    {% endif %}
 {% endblock %}
