@@ -1,0 +1,465 @@
+<!--
+    title: Spring Boot 注解大全
+    date: 2026-06-25
+    description: Spring Boot 常用注解速查表，涵盖核心、Web、AOP、事务、校验等分类
+-->
+
+<h1>Spring Boot 注解大全</h1>
+
+<blockquote>
+    <p>按功能分类整理，方便日常开发速查。每个注解附带一句话说明和最常用场景。</p>
+</blockquote>
+
+<h2>目录</h2>
+<ol>
+<li><a href="#1-核心注解">核心注解</a></li>
+<li><a href="#2-web-请求映射">Web 请求映射</a></li>
+<li><a href="#3-参数绑定与校验">参数绑定与校验</a></li>
+<li><a href="#4-aop-切面">AOP 切面</a></li>
+<li><a href="#5-事务与数据访问">事务与数据访问</a></li>
+<li><a href="#6-条件装配与配置">条件装配与配置</a></li>
+<li><a href="#7-定时与异步">定时与异步</a></li>
+<li><a href="#8-异常处理">异常处理</a></li>
+</ol>
+<hr />
+
+<!-- ======================================== -->
+<h2 id="1-核心注解">1. 核心注解</h2>
+<table>
+<thead><tr><th>注解</th><th>作用</th><th>常用场景</th></tr></thead>
+<tbody>
+<tr>
+    <td><code>@SpringBootApplication</code></td>
+    <td>组合注解 = <code>@Configuration</code> + <code>@EnableAutoConfiguration</code> + <code>@ComponentScan</code></td>
+    <td>打在启动类上，一个注解搞定自动配置和包扫描</td>
+</tr>
+<tr>
+    <td><code>@Component</code></td>
+    <td>将类标记为 Spring 管理的 Bean</td>
+    <td>通用组件，说不清是哪一层时用它</td>
+</tr>
+<tr>
+    <td><code>@Service</code></td>
+    <td><code>@Component</code> 的语义化变体，标记业务层</td>
+    <td>Service 层实现类</td>
+</tr>
+<tr>
+    <td><code>@Repository</code></td>
+    <td><code>@Component</code> 的语义化变体，标记数据访问层</td>
+    <td>DAO 层，Spring 自动转换数据库异常</td>
+</tr>
+<tr>
+    <td><code>@Controller</code></td>
+    <td>标记 MVC 控制器，方法返回视图名</td>
+    <td>传统 MVC 返回页面</td>
+</tr>
+<tr>
+    <td><code>@RestController</code></td>
+    <td><code>@Controller</code> + <code>@ResponseBody</code>，方法直接返回 JSON</td>
+    <td>RESTful API 控制器</td>
+</tr>
+<tr>
+    <td><code>@Autowired</code></td>
+    <td>按类型自动注入 Bean</td>
+    <td>构造器 / 字段 / Setter 注入</td>
+</tr>
+<tr>
+    <td><code>@Qualifier("name")</code></td>
+    <td>配合 <code>@Autowired</code>，按名称指定注入哪个 Bean</td>
+    <td>同一接口有多个实现类时</td>
+</tr>
+<tr>
+    <td><code>@Value("${key}")</code></td>
+    <td>从配置文件读取值注入字段</td>
+    <td><code>@Value("${server.port}")</code></td>
+</tr>
+<tr>
+    <td><code>@Bean</code></td>
+    <td>方法级，将返回值注册为 Spring Bean</td>
+    <td>第三方库对象的初始化（如 RestTemplate）</td>
+</tr>
+<tr>
+    <td><code>@Configuration</code></td>
+    <td>标记配置类，等价于 XML 配置文件</td>
+    <td>集中管理 <code>@Bean</code> 定义</td>
+</tr>
+<tr>
+    <td><code>@Scope</code></td>
+    <td>指定 Bean 的作用域</td>
+    <td><code>singleton</code>（默认）、<code>prototype</code>、<code>request</code>、<code>session</code></td>
+</tr>
+<tr>
+    <td><code>@PostConstruct</code></td>
+    <td>Bean 初始化完成后自动执行</td>
+    <td>数据预热、连接初始化</td>
+</tr>
+<tr>
+    <td><code>@PreDestroy</code></td>
+    <td>容器销毁 Bean 前执行</td>
+    <td>释放资源、关闭连接</td>
+</tr>
+</tbody>
+</table>
+
+<!-- ======================================== -->
+<h2 id="2-web-请求映射">2. Web 请求映射</h2>
+<table>
+<thead><tr><th>注解</th><th>作用</th><th>示例</th></tr></thead>
+<tbody>
+<tr>
+    <td><code>@RequestMapping("/path")</code></td>
+    <td>映射 HTTP 请求路径到方法，可指定 method</td>
+    <td><code>@RequestMapping(value="/user", method=RequestMethod.GET)</code></td>
+</tr>
+<tr>
+    <td><code>@GetMapping("/path")</code></td>
+    <td><code>@RequestMapping(method=GET)</code> 的简写</td>
+    <td><code>@GetMapping("/user/{id}")</code></td>
+</tr>
+<tr>
+    <td><code>@PostMapping("/path")</code></td>
+    <td><code>@RequestMapping(method=POST)</code> 的简写</td>
+    <td><code>@PostMapping("/user")</code></td>
+</tr>
+<tr>
+    <td><code>@PutMapping("/path")</code></td>
+    <td>对应 HTTP PUT，通常用于全量更新</td>
+    <td><code>@PutMapping("/user/{id}")</code></td>
+</tr>
+<tr>
+    <td><code>@DeleteMapping("/path")</code></td>
+    <td>对应 HTTP DELETE</td>
+    <td><code>@DeleteMapping("/user/{id}")</code></td>
+</tr>
+<tr>
+    <td><code>@PatchMapping("/path")</code></td>
+    <td>对应 HTTP PATCH，通常用于部分更新</td>
+    <td><code>@PatchMapping("/user/{id}/password")</code></td>
+</tr>
+<tr>
+    <td><code>@PathVariable</code></td>
+    <td>取出 URL 路径中的变量</td>
+    <td><code>@GetMapping("/user/{id}")</code> + <code>@PathVariable Long id</code></td>
+</tr>
+<tr>
+    <td><code>@RequestParam</code></td>
+    <td>取出 URL 查询参数或表单参数</td>
+    <td><code>?page=1&size=10</code> → <code>@RequestParam int page</code></td>
+</tr>
+<tr>
+    <td><code>@RequestBody</code></td>
+    <td>将 HTTP 请求体的 JSON 自动反序列化为 Java 对象</td>
+    <td><code>@PostMapping</code> + <code>@RequestBody User user</code></td>
+</tr>
+<tr>
+    <td><code>@ResponseBody</code></td>
+    <td>方法返回值直接写入 HTTP 响应体（JSON）</td>
+    <td><code>@RestController</code> 已包含，单独用在 <code>@Controller</code> 中</td>
+</tr>
+<tr>
+    <td><code>@CrossOrigin</code></td>
+    <td>允许跨域请求（CORS）</td>
+    <td><code>@CrossOrigin(origins = "http://localhost:3000")</code></td>
+</tr>
+<tr>
+    <td><code>@RequestHeader</code></td>
+    <td>取出请求头中的值</td>
+    <td><code>@RequestHeader("Authorization") String token</code></td>
+</tr>
+</tbody>
+</table>
+
+<!-- ======================================== -->
+<h2 id="3-参数绑定与校验">3. 参数绑定与校验</h2>
+<table>
+<thead><tr><th>注解</th><th>作用</th><th>示例</th></tr></thead>
+<tbody>
+<tr>
+    <td><code>@Valid</code></td>
+    <td>触发对入参对象的 JSR-303 校验</td>
+    <td><code>@PostMapping</code> + <code>@Valid @RequestBody User user</code></td>
+</tr>
+<tr>
+    <td><code>@NotNull</code></td>
+    <td>不能为 <code>null</code></td>
+    <td><code>@NotNull(message = "ID 不能为空")</code></td>
+</tr>
+<tr>
+    <td><code>@NotBlank</code></td>
+    <td>不能为 <code>null</code> 且不能全是空白字符（用于字符串）</td>
+    <td><code>@NotBlank(message = "用户名不能为空")</code></td>
+</tr>
+<tr>
+    <td><code>@NotEmpty</code></td>
+    <td>不能为 <code>null</code> 且不能为空集合/空字符串</td>
+    <td><code>@NotEmpty List&lt;Long&gt; ids</code></td>
+</tr>
+<tr>
+    <td><code>@Size(min, max)</code></td>
+    <td>字符串长度或集合大小范围</td>
+    <td><code>@Size(min=6, max=20) String password</code></td>
+</tr>
+<tr>
+    <td><code>@Min / @Max</code></td>
+    <td>数值的最小 / 最大值</td>
+    <td><code>@Min(0) @Max(150) int age</code></td>
+</tr>
+<tr>
+    <td><code>@Email</code></td>
+    <td>邮箱格式校验</td>
+    <td><code>@Email String email</code></td>
+</tr>
+<tr>
+    <td><code>@Pattern(regexp)</code></td>
+    <td>正则表达式校验</td>
+    <td><code>@Pattern(regexp="^1[3-9]\\d{9}$") String phone</code></td>
+</tr>
+<tr>
+    <td><code>@Range(min, max)</code></td>
+    <td>数值范围（Hibernate Validator）</td>
+    <td><code>@Range(min=1, max=100) int score</code></td>
+</tr>
+</tbody>
+</table>
+
+<!-- ======================================== -->
+<h2 id="4-aop-切面">4. AOP 切面</h2>
+<table>
+<thead><tr><th>注解</th><th>作用</th><th>说明</th></tr></thead>
+<tbody>
+<tr>
+    <td><code>@Aspect</code></td>
+    <td>标记切面类</td>
+    <td>配合 <code>@Component</code> 注册到容器</td>
+</tr>
+<tr>
+    <td><code>@Pointcut</code></td>
+    <td>定义切入点表达式，给其他通知复用</td>
+    <td><code>@Pointcut("execution(* com.example.service.*.*(..))")</code></td>
+</tr>
+<tr>
+    <td><code>@Before</code></td>
+    <td>前置通知，目标方法执行前触发</td>
+    <td>权限校验、日志记录</td>
+</tr>
+<tr>
+    <td><code>@After</code></td>
+    <td>后置通知（最终），无论是否异常都执行</td>
+    <td>资源释放、清理工作</td>
+</tr>
+<tr>
+    <td><code>@AfterReturning</code></td>
+    <td>返回通知，方法<strong>正常返回</strong>后触发，可拿到返回值</td>
+    <td>缓存结果、日志记录返回值</td>
+</tr>
+<tr>
+    <td><code>@AfterThrowing</code></td>
+    <td>异常通知，方法抛出异常时触发，可拿到异常对象</td>
+    <td>异常日志、告警</td>
+</tr>
+<tr>
+    <td><code>@Around</code></td>
+    <td>环绕通知，手动控制方法执行前后逻辑，最强但最重</td>
+    <td>性能统计、事务管理、统一日志</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+    <p><strong>常用切入点表达式模板：</strong></p>
+    <pre><code>// 所有 Service 层方法
+@Pointcut("execution(* com.example.service.*.*(..))")
+
+// 带自定义注解的方法
+@Pointcut("@annotation(com.example.annotation.SysLog)")
+
+// Controller 层所有方法
+@Pointcut("execution(* com.example.controller.*.*(..))")</code></pre>
+</blockquote>
+
+<!-- ======================================== -->
+<h2 id="5-事务与数据访问">5. 事务与数据访问</h2>
+<table>
+<thead><tr><th>注解</th><th>作用</th><th>说明</th></tr></thead>
+<tbody>
+<tr>
+    <td><code>@Transactional</code></td>
+    <td>声明式事务，方法内数据库操作要么全成功要么全回滚</td>
+    <td>一般打在 Service 层方法上</td>
+</tr>
+<tr>
+    <td><code>@EnableTransactionManagement</code></td>
+    <td>开启注解驱动的事务管理</td>
+    <td>Spring Boot 自动配置已包含，通常不用手动加</td>
+</tr>
+<tr>
+    <td><code>@Mapper</code></td>
+    <td>标记 MyBatis 映射接口</td>
+    <td><code>@Mapper public interface UserMapper {}</code></td>
+</tr>
+<tr>
+    <td><code>@MapperScan("包名")</code></td>
+    <td>批量扫描 MyBatis Mapper 接口</td>
+    <td>打在启动类上，替代每个 Mapper 单独加 <code>@Mapper</code></td>
+</tr>
+<tr>
+    <td><code>@Entity</code></td>
+    <td>标记 JPA 实体类，与数据库表映射</td>
+    <td>JPA 项目使用</td>
+</tr>
+<tr>
+    <td><code>@Table(name="表名")</code></td>
+    <td>指定实体对应的数据库表名</td>
+    <td>类名和表名不一致时用</td>
+</tr>
+<tr>
+    <td><code>@Id</code></td>
+    <td>标记主键字段</td>
+    <td>JPA 实体类必须有一个 <code>@Id</code></td>
+</tr>
+<tr>
+    <td><code>@GeneratedValue</code></td>
+    <td>主键生成策略</td>
+    <td><code>strategy = GenerationType.IDENTITY</code> 自增</td>
+</tr>
+<tr>
+    <td><code>@Column</code></td>
+    <td>指定字段对应的列名、长度、是否可空等</td>
+    <td><code>@Column(name="user_name", length=50, nullable=false)</code></td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+    <p><strong><code>@Transactional</code> 常用参数：</strong></p>
+    <pre><code>@Transactional(
+    rollbackFor = Exception.class,   // 遇到任何异常都回滚
+    propagation = Propagation.REQUIRED,  // 默认传播行为
+    isolation = Isolation.READ_COMMITTED,  // 隔离级别
+    timeout = 30   // 超时 30 秒
+)</code></pre>
+</blockquote>
+
+<!-- ======================================== -->
+<h2 id="6-条件装配与配置">6. 条件装配与配置</h2>
+<table>
+<thead><tr><th>注解</th><th>作用</th><th>说明</th></tr></thead>
+<tbody>
+<tr>
+    <td><code>@ConditionalOnClass</code></td>
+    <td>类路径存在指定类时才装配</td>
+    <td>自动配置底层常用，如"有 Redis 依赖才配 Redis"</td>
+</tr>
+<tr>
+    <td><code>@ConditionalOnMissingBean</code></td>
+    <td>容器中没有指定 Bean 时才装配</td>
+    <td>提供默认 Bean，用户可自定义覆盖</td>
+</tr>
+<tr>
+    <td><code>@ConditionalOnProperty</code></td>
+    <td>配置文件中有指定属性时才装配</td>
+    <td><code>@ConditionalOnProperty(name="feature.cache", havingValue="true")</code></td>
+</tr>
+<tr>
+    <td><code>@Profile("环境名")</code></td>
+    <td>指定 Bean 在哪个环境下生效</td>
+    <td><code>@Profile("dev")</code> / <code>@Profile("prod")</code></td>
+</tr>
+<tr>
+    <td><code>@ConfigurationProperties(prefix)</code></td>
+    <td>将配置文件属性批量绑定到 Java 对象</td>
+    <td><code>@ConfigurationProperties(prefix="app.jwt")</code></td>
+</tr>
+<tr>
+    <td><code>@EnableConfigurationProperties</code></td>
+    <td>启用指定的配置属性类</td>
+    <td>让 <code>@ConfigurationProperties</code> 类注册为 Bean</td>
+</tr>
+</tbody>
+</table>
+
+<!-- ======================================== -->
+<h2 id="7-定时与异步">7. 定时与异步</h2>
+<table>
+<thead><tr><th>注解</th><th>作用</th><th>示例 / 说明</th></tr></thead>
+<tbody>
+<tr>
+    <td><code>@Scheduled</code></td>
+    <td>定时执行方法</td>
+    <td><code>@Scheduled(cron="0 0 3 * * ?")</code> 每天凌晨 3 点</td>
+</tr>
+<tr>
+    <td><code>@EnableScheduling</code></td>
+    <td>开启定时任务支持</td>
+    <td>打在启动类或配置类上</td>
+</tr>
+<tr>
+    <td><code>@Async</code></td>
+    <td>方法异步执行，调用方立即返回</td>
+    <td>发邮件、推送通知等非实时操作</td>
+</tr>
+<tr>
+    <td><code>@EnableAsync</code></td>
+    <td>开启异步任务支持</td>
+    <td>打在启动类或配置类上</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+    <p><strong>定时任务 Cron 常用模板：</strong></p>
+    <pre><code>@Scheduled(cron = "0 0 3 * * ?")    // 每天凌晨 3:00
+@Scheduled(cron = "0 */30 * * * ?")  // 每 30 分钟
+@Scheduled(fixedRate = 5000)         // 固定间隔 5 秒（上次<em>开始</em>后计时）
+@Scheduled(fixedDelay = 5000)        // 固定延迟 5 秒（上次<em>结束</em>后计时）</code></pre>
+</blockquote>
+
+<!-- ======================================== -->
+<h2 id="8-异常处理">8. 异常处理</h2>
+<table>
+<thead><tr><th>注解</th><th>作用</th><th>说明</th></tr></thead>
+<tbody>
+<tr>
+    <td><code>@ControllerAdvice</code></td>
+    <td>全局异常处理器，拦截所有 Controller 抛出的异常</td>
+    <td>配合 <code>@ExceptionHandler</code> 统一返回错误 JSON</td>
+</tr>
+<tr>
+    <td><code>@RestControllerAdvice</code></td>
+    <td><code>@ControllerAdvice</code> + <code>@ResponseBody</code></td>
+    <td>返回 JSON 的全局异常处理</td>
+</tr>
+<tr>
+    <td><code>@ExceptionHandler</code></td>
+    <td>指定处理哪种异常</td>
+    <td><code>@ExceptionHandler(RuntimeException.class)</code></td>
+</tr>
+<tr>
+    <td><code>@ResponseStatus</code></td>
+    <td>指定响应的 HTTP 状态码</td>
+    <td><code>@ResponseStatus(HttpStatus.NOT_FOUND)</code></td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+    <p><strong>全局异常处理模板：</strong></p>
+    <pre><code>@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(BusinessException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleBusiness(BusinessException e) {
+        return Result.error(e.getCode(), e.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result handleUnknown(Exception e) {
+        log.error("未知异常", e);
+        return Result.error(500, "服务器内部错误");
+    }
+}</code></pre>
+</blockquote>
+
+<hr />
